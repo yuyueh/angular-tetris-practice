@@ -14,4 +14,9 @@ export namespace TetrisSelectors {
         selectTetris,
         (state: Tetris) => state.current
     );
+
+    export const selectMatrix = createSelector(
+        selectTetris,
+        (state: Tetris) => state.matrix
+    );
 }
