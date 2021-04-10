@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { AppState } from './../../store/app.state';
+import { Store } from '@ngrx/store';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { TetrisActions } from 'src/app/store/tetris/tetris.actions';
+
+const KeyUp = 'document:keyup';
+const KeyDown = 'document:keydown';
 
 @Component({
   selector: 'app-tetris-platform',
@@ -7,9 +13,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TetrisPlatformComponent implements OnInit {
 
-  constructor() { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
+  }
+
+  @HostListener(`${KeyDown}.arrowDown`)
+  keyDownDown() {
+    this.store.dispatch(TetrisActions.moveDown());
   }
 
 }

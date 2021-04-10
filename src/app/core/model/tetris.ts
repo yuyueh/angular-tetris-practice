@@ -1,11 +1,16 @@
+import { ImmutableObject } from './../util/common.util';
 import { Tile } from './tile';
 import { Piece } from "./piece";
 import { GameState } from './game-state.enum';
 
-export interface Tetris {
-    matrix: Tile[][];
-    current: Piece;
-    next: Piece;
-    sound: boolean;
-    gameState: GameState;
+export class Tetris extends ImmutableObject {
+    constructor(
+        public readonly matrix: Tile[][],
+        public readonly current: Piece,
+        public readonly next: Piece,
+        public readonly sound: boolean,
+        public readonly gameState: GameState,
+    ) {
+        super();
+    }
 }

@@ -4,91 +4,92 @@ import { Tetris } from 'src/app/core/model/tetris';
 import { TetrisActions } from './tetris.actions';
 import { MatrixUtil } from 'src/app/core/util/matrix.util';
 import { GameState } from 'src/app/core/model/game-state.enum';
+import { Tile } from 'src/app/core/model/tile';
 
 export const FEATURE_KEY = 'tetris';
 
-export const initialState: Tetris = {
-    matrix: MatrixUtil.getStartBoard(),
-    current: PieceUtil.getRandomPiece(),
-    next: PieceUtil.getRandomPiece(),
-    sound: true,
-    gameState: GameState.Loading,
-};
+function clearCurrentPiece(state: Tetris) {
+    PieceUtil.getPositionOnGrid(state.current).forEach(([x, y]) => {
+        state.matrix[x][y] = new Tile(0);
+    });
+}
+
+export const initialState: Tetris = new Tetris(
+    MatrixUtil.getStartBoard(),
+    PieceUtil.getRandomPiece(),
+    PieceUtil.getRandomPiece(),
+    true,
+    GameState.Loading,
+);
 
 const startReducer = on(TetrisActions.start, (state: Tetris) => {
     // start timer
-
-    return {
-        ...state,
-        current: PieceUtil.getRandomPiece(),
-        gameState: GameState.Started
-    };
+    
+    return state
+            .set('current', PieceUtil.getRandomPiece())
+            .set('gameState', GameState.Started);
 });
 
 const pauseReducer = on(TetrisActions.pause, (state: Tetris) => {
     // stop timer
 
-    return {
-        ...state,
-        gameState: GameState.Paused
-    };
+    return state.set('gameState', GameState.Paused);
 });
 
 const resumeReducer = on(TetrisActions.resume, (state: Tetris) => {
     // start timer
 
-    return {
-        ...state,
-        gameState: GameState.Started
-    };
+    return state.set('gameState', GameState.Started);
 });
 
 const resetReducer = on(TetrisActions.reset, (state: Tetris) => {
     // clear timer
 
-    return {
-        ...state,
-        gameState: GameState.Loading
-    };
+    return state.set('gameState', GameState.Loading);
 });
 
 const moveLeftReducer = on(TetrisActions.moveLeft, (state: Tetris) => {
-    const newState = Object.assign({}, state);
-
-    return newState;
+    return state;
 });
  
 const moveRightReducer = on(TetrisActions.moveRight, (state: Tetris) => {
-    const newState = Object.assign({}, state);
-
-    return newState;
+    return state;
 });
  
 const moveDownReducer = on(TetrisActions.moveDown, (state: Tetris) => {
-    const newState = Object.assign({}, state);
+    const { current, matrix } = state;
 
-    return newState;
+    // clear view
+    clearCurrentPiece(state);
+    
+    // move done
+    const p = current.moveDown();
+
+    // if (Collided) {
+    //     return state;
+    // } else {
+    //      draw
+    // }
+
+    return state;
 });
 
-const setSoundReducer = on(TetrisActions.setSound, (state: Tetris, actions) => {
+const setSoundReducer = on(TetrisActions.setSound, (state: Tetris, { open }) => {
     // call soundService
 
-    return {
-        ...state,
-        sound: actions.open,
-    };
+    return state.set('sound', open);
 });
  
 const _tetrisReducer = createReducer(
-  initialState,
-  startReducer,
-  pauseReducer,
-  resumeReducer,
-  resetReducer,
-  moveLeftReducer,
-  moveRightReducer,
-  moveDownReducer,
-  setSoundReducer,
+    initialState,
+    startReducer,
+    pauseReducer,
+    resumeReducer,
+    resetReducer,
+    moveLeftReducer,
+    moveRightReducer,
+    moveDownReducer,
+    setSoundReducer,
 );
  
 export function tetrisReducer(state: Tetris | undefined, action: Action) {
