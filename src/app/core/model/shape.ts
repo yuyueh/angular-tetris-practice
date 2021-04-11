@@ -1,3 +1,5 @@
-export type Shape = number[][];
+import { DeepReadonlyArray } from "./types";
 
-export type Shapes = Shape[];
+export type Shape = DeepReadonlyArray<number[]>;
+
+export type Shapes = ReadonlyArray<Shape>;

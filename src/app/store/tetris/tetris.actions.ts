@@ -8,5 +8,6 @@ export namespace TetrisActions {
     export const moveLeft = createAction('[Tetris] MoveLeft');
     export const moveRight = createAction('[Tetris] MoveRight');
     export const moveDown = createAction('[Tetris] MoveDown');
+    export const rotate = createAction('[Tetris] Rotate');
     export const setSound = createAction('[Tetris] SetSound', props<{ open: boolean }>());
 }
