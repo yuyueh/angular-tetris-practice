@@ -8,6 +8,9 @@ import { DeepReadonlyArray } from './types';
 import { GAME_HEIGHT, GAME_WIDTH } from '../util/matrix.util';
 
 export class Tetris extends ImmutableObject {
+    public readonly isLock: boolean = false;
+    public readonly isGameOver: boolean = false;
+
     constructor(
         public readonly matrix: DeepReadonlyArray<Tile[]>,
         public readonly current: Piece,
@@ -55,14 +58,14 @@ export class Tetris extends ImmutableObject {
             return ArrayUtil.setNested(o, y, x, new Tile(1, true));
         }, this.matrix);
 
-        // TODO isOver do something
-        // if (this._isOver()) return null;
-
-        console.log(this._dropLine(matrix));
-
-        return this.set('matrix', this._dropLine(matrix))
+        return this.set('isGameOver', this._isGameOver())
+                    .set('matrix', this._dropLine(matrix))
                     .set('current', this.next)
                     .set('next', PieceUtil.getRandomPiece());
+    }
+
+    private _isGameOver(): boolean {
+        return this.current.positionOnGrid.every(([y, _]) => y < 0);
     }
 
     private _dropLine(matrix: DeepReadonlyArray<Tile[]>): DeepReadonlyArray<Tile[]> {
@@ -74,9 +77,5 @@ export class Tetris extends ImmutableObject {
         return new Array(20).fill(undefined).map((_, i) => {
             return (GAME_HEIGHT - i > aliveRow.length) ? MatrixUtil.getDefaultRow() : aliveRow[i - GAME_HEIGHT + aliveRow.length];
         }) as DeepReadonlyArray<Tile[]>;
-    }
-
-    private _isOver(): boolean {
-        return this.current.positionOnGrid.every(([y, _]) => y < 0);
     }
 }

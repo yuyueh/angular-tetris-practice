@@ -1,7 +1,9 @@
 import { AppState } from './../../store/app.state';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ChangeDetectionStrategy, Component, HostListener, OnInit } from '@angular/core';
 import { TetrisActions } from 'src/app/store/tetris/tetris.actions';
+import { TetrisSelectors } from 'src/app/store/tetris/tetris.selector';
+import { filter } from 'rxjs/operators';
 
 const KeyUp = 'document:keyup';
 const KeyDown = 'document:keydown';
@@ -17,6 +19,13 @@ export class TetrisPlatformComponent implements OnInit {
   constructor(private store: Store<AppState>) { }
 
   ngOnInit(): void {
+    this.store
+      .pipe(
+        select(TetrisSelectors.selectTetris),
+        filter(t => t.isGameOver)
+      ).subscribe(() => {
+        this.store.dispatch(TetrisActions.reset());
+      });
   }
 
   @HostListener(`${KeyDown}.arrowUp`)
