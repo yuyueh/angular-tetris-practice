@@ -4,6 +4,10 @@ import { ImmutableObject, notEmpty } from '../util/common.util';
 
 type Positions = [number, number];
 
+function removeNegativePosition(p: Positions): boolean {
+    return p[0] > -1 && p[1] > -1;
+}
+
 export class Piece extends ImmutableObject {
 
     get positions(): [number, number] {
@@ -23,16 +27,16 @@ export class Piece extends ImmutableObject {
         super();
     }
 
-    moveDown(): Piece {
-        return this.set('y', this.y + 1);
+    moveDown(step: number = 1): Piece {
+        return this.set('y', this.y + step);
     }
 
-    moveLeft(): Piece {
-        return this.set('x', this.x - 1);
+    moveLeft(step: number = 1): Piece {
+        return this.set('x', this.x - step);
     }
 
-    moveRight(): Piece {
-        return this.set('x', this.x + 1);
+    moveRight(step: number = 1): Piece {
+        return this.set('x', this.x + step);
     }
 
     rotate(): Piece {
@@ -44,10 +48,19 @@ export class Piece extends ImmutableObject {
 
     get positionOnGrid(): Positions[] {
         return this.shape.map<(Positions | undefined)[]>((row, positionY) => 
-                row.map((filled, positionX) => (filled ? [ this.x + positionX, this.y + positionY ] : undefined))
+                row.map((filled, positionX) => (filled ? [ this.y + positionY, this.x + positionX ] : undefined))
             )
             .reduce((o, p) => ([...o, ...p]), [])
             .filter(notEmpty);
+    }
+
+    get positionOnGridWithoutOutside(): Positions[] {
+        return this.positionOnGrid
+            .filter(removeNegativePosition);
+    }
+
+    get extraLengthOnTheRight(): number {
+        return Math.max(...this.positionOnGrid.map(([_, x]) => x)) - 10 + 1;
     }
 
     private _isLast() {

@@ -1,8 +1,11 @@
-import { ArrayUtil, ImmutableObject } from './../util/common.util';
+import { MatrixUtil } from 'src/app/core/util/matrix.util';
+import { PieceUtil } from 'src/app/core/util/piece.util';
+import { ArrayUtil, ImmutableObject, notEmpty } from './../util/common.util';
 import { Tile } from './tile';
 import { Piece } from "./piece";
 import { GameState } from './game-state.enum';
 import { DeepReadonlyArray } from './types';
+import { GAME_HEIGHT, GAME_WIDTH } from '../util/matrix.util';
 
 export class Tetris extends ImmutableObject {
     constructor(
@@ -16,27 +19,64 @@ export class Tetris extends ImmutableObject {
     }
 
     clearCurrentPiece(): Tetris {
-        const matrix = this.current.positionOnGrid.reduce((o, [x, y]) => {
-            if (x < 0 || y < 0) {
-                return o;
-            } else {
-                return ArrayUtil.setNested(o, y, x, new Tile(0));
-            }
-        }, this.clone().matrix);
+        const matrix = this.current.positionOnGridWithoutOutside.reduce((o, [y, x]) => {
+            return ArrayUtil.setNested(o, y, x, new Tile(0));
+        }, this.matrix);
     
         return this.set('matrix', matrix);
     }
 
     drawCurrentPiece(): Tetris {
-        const matrix = this.current.positionOnGrid.reduce((o, [x, y]) => {
-            if (x < 0 || y < 0) {
-                return o;
-            } else {
-                // console.log(ArrayUtil.setNested(o, y, x, new Tile(1)));
-                return ArrayUtil.setNested(o, y, x, new Tile(1));
-            }
-        }, this.clone().matrix);
+        const matrix = this.current.positionOnGridWithoutOutside.reduce((o, [y, x]) => {
+            return ArrayUtil.setNested(o, y, x, new Tile(1));
+        }, this.matrix);
 
         return this.set('matrix', matrix);
+    }
+
+    isCollidedWithLeft(): boolean {
+        return this.current.x < 0;
+    }
+
+    isCollidedWithRight(): boolean {
+        return this.current.positionOnGrid.some(([_, x]) => x >= GAME_WIDTH);
+    }
+
+    isCollidedWithBottom(): boolean {
+        return this.current.positionOnGrid.some(([y, _]) => y >= GAME_HEIGHT);
+    }
+
+    isCollidedWithSolid(): boolean {
+        return this.current.positionOnGridWithoutOutside.some(([y, x]) => this.matrix[y][x].isFilled);
+    }
+
+    nextPiece(): Tetris {
+        const matrix = this.current.positionOnGridWithoutOutside.reduce((o, [y, x]) => {
+            return ArrayUtil.setNested(o, y, x, new Tile(1, true));
+        }, this.matrix);
+
+        // TODO isOver do something
+        // if (this._isOver()) return null;
+
+        console.log(this._dropLine(matrix));
+
+        return this.set('matrix', this._dropLine(matrix))
+                    .set('current', this.next)
+                    .set('next', PieceUtil.getRandomPiece());
+    }
+
+    private _dropLine(matrix: DeepReadonlyArray<Tile[]>): DeepReadonlyArray<Tile[]> {
+        const aliveRow = (matrix as Tile[][])
+            .map((row) => 
+                row.every(col => col.isSolid) ? null : row
+            ).filter(notEmpty);
+
+        return new Array(20).fill(undefined).map((_, i) => {
+            return (GAME_HEIGHT - i > aliveRow.length) ? MatrixUtil.getDefaultRow() : aliveRow[i - GAME_HEIGHT + aliveRow.length];
+        }) as DeepReadonlyArray<Tile[]>;
+    }
+
+    private _isOver(): boolean {
+        return this.current.positionOnGrid.every(([y, _]) => y < 0);
     }
 }

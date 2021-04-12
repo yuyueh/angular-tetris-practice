@@ -1,10 +1,15 @@
 import { Tile } from './../model/tile';
 
+export const GAME_WIDTH = 10;
+export const GAME_HEIGHT = 20;
+
 export namespace MatrixUtil {
-    const GAME_WIDTH = 10;
-    const GAME_HEIGHT = 20;
+
+    export function getDefaultRow() {
+        return new Array(GAME_WIDTH).fill(new Tile(0));
+    }
 
     export function getStartBoard() {
-        return new Array(GAME_HEIGHT).fill(new Array(GAME_WIDTH).fill(new Tile(0)))
+        return new Array(GAME_HEIGHT).fill(getDefaultRow());
     }
 }

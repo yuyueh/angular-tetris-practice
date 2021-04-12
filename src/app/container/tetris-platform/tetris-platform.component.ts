@@ -38,5 +38,10 @@ export class TetrisPlatformComponent implements OnInit {
   keyDownRight() {
     this.store.dispatch(TetrisActions.moveRight());
   }
+  
+  @HostListener(`${KeyDown}.space`)
+  keyDownSpace() {
+    this.store.dispatch(TetrisActions.fall());
+  }
 
 }

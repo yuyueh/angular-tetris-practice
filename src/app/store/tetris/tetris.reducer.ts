@@ -4,7 +4,6 @@ import { Tetris } from 'src/app/core/model/tetris';
 import { TetrisActions } from './tetris.actions';
 import { MatrixUtil } from 'src/app/core/util/matrix.util';
 import { GameState } from 'src/app/core/model/game-state.enum';
-import { Tile } from 'src/app/core/model/tile';
 
 export const FEATURE_KEY = 'tetris';
 
@@ -43,69 +42,50 @@ const resetReducer = on(TetrisActions.reset, (state: Tetris) => {
 });
 
 const moveLeftReducer = on(TetrisActions.moveLeft, (state: Tetris) => {
-    // clear view
-    const newState = state.clearCurrentPiece();
+    const newState = state.clearCurrentPiece().set('current', state.current.moveLeft());
 
-    // move done
-    const p = state.current.moveLeft();
-
-    // if (Collided) {
-    //     return state;
-    // } else {
-    //      draw
-    // }
-
-    return newState.set('current', p).drawCurrentPiece();
+    return newState.isCollidedWithLeft() || newState.isCollidedWithSolid()
+        ? state
+        : newState.drawCurrentPiece();
 });
  
 const moveRightReducer = on(TetrisActions.moveRight, (state: Tetris) => {
-    // clear view
-    const newState = state.clearCurrentPiece();
+    const newState = state.clearCurrentPiece().set('current', state.current.moveRight());
 
-    // move done
-    const p = state.current.moveRight();
-
-    // if (Collided) {
-    //     return state;
-    // } else {
-    //      draw
-    // }
-
-    return newState.set('current', p).drawCurrentPiece();
+    return newState.isCollidedWithRight() || newState.isCollidedWithSolid()
+        ? state
+        : newState.drawCurrentPiece();
 });
  
 const moveDownReducer = on(TetrisActions.moveDown, (state: Tetris) => {
-    // clear view
-    const newState = state.clearCurrentPiece();
+    const newState = state.clearCurrentPiece().set('current', state.current.moveDown())
 
-    // move done
-    const p = state.current.moveDown();
-    // console.log(p);
-    // console.log(state.matrix);
-    // if (Collided) {
-    //     return state;
-    // } else {
-    //      draw
-    // }
-
-    return newState.set('current', p).drawCurrentPiece();
+    return newState.isCollidedWithBottom() || newState.isCollidedWithSolid()
+        ? state.nextPiece()
+        : newState.drawCurrentPiece();
 });
 
 const rotateReducer = on(TetrisActions.rotate, (state: Tetris) => {
-    // clear view
-    const newState = state.clearCurrentPiece();
+    let newState = state.clearCurrentPiece().set('current', state.current.rotate());
 
-    // move done
-    const p = state.current.rotate();
-    // console.log(p);
-    // console.log(state.matrix);
-    // if (Collided) {
-    //     return state;
-    // } else {
-    //      draw
-    // }
+    if (newState.isCollidedWithRight()) {
+        const current = newState.current.moveLeft(newState.current.extraLengthOnTheRight);
+        newState = newState.set('current', current);
+    }
 
-    return newState.set('current', p).drawCurrentPiece();
+    return newState.isCollidedWithSolid() ? state : newState.drawCurrentPiece();
+});
+
+const fallReducer = on(TetrisActions.fall, (state: Tetris) => {
+    let oldState = state;
+    let newState = state.clearCurrentPiece().set('current', state.current.moveDown());
+
+    while (!newState.isCollidedWithBottom() && !newState.isCollidedWithSolid()) {
+        oldState = newState;
+        newState = newState.set('current', newState.current.moveDown());
+    }
+
+    return oldState.nextPiece();
 });
 
 const setSoundReducer = on(TetrisActions.setSound, (state: Tetris, { open }) => {
@@ -124,6 +104,7 @@ const _tetrisReducer = createReducer(
     moveRightReducer,
     moveDownReducer,
     rotateReducer,
+    fallReducer,
     setSoundReducer,
 );
  
