@@ -7,9 +7,9 @@ export namespace TetrisSelectors {
 
     export const selectTetris = createSelector(
         (state: AppState) => state.tetris,
-        (tetris:Tetris) => tetris
+        (tetris: Tetris) => tetris
     );
-    
+
     export const selectCurrent = createSelector(
         selectTetris,
         (state: Tetris) => state.current

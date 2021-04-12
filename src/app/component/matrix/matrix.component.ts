@@ -6,25 +6,22 @@ import { select, Store } from '@ngrx/store';
 import { TetrisActions } from 'src/app/store/tetris/tetris.actions';
 
 @Component({
-  selector: 'app-matrix',
-  templateUrl: './matrix.component.html',
-  styleUrls: ['./matrix.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-matrix',
+    templateUrl: './matrix.component.html',
+    styleUrls: ['./matrix.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MatrixComponent implements OnInit {
-  matrix$ = this.store.pipe(select(TetrisSelectors.selectMatrix));
+    matrix$ = this.store.pipe(select(TetrisSelectors.selectMatrix));
 
-  constructor(private store: Store<AppState>) { }
+    constructor(private store: Store<AppState>) {}
 
-  ngOnInit(): void {
+    ngOnInit(): void {
+        this.store.dispatch(TetrisActions.start());
+        this.store.dispatch(TetrisActions.setSound({ open: false }));
+    }
 
-    this.store.dispatch(TetrisActions.start());
-    this.store.dispatch(TetrisActions.setSound({open: false}));
-
-  }
-
-  trackByFn(index: number, _: any) {
-    return index;
-  }
-
+    trackByFn(index: number, _: any) {
+        return index;
+    }
 }

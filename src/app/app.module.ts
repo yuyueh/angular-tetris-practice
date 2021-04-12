@@ -11,19 +11,19 @@ import { TetrisPlatformComponent } from './container/tetris-platform/tetris-plat
 import { tetrisReducer } from './store/tetris/tetris.reducer';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    MatrixComponent,
-    TileComponent,
-    TetrisPlatformComponent
-  ],
-  imports: [
-    BrowserModule,
-    CoreModule,
-    SharedModule,
-    StoreModule.forRoot({ tetris: tetrisReducer })
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        MatrixComponent,
+        TileComponent,
+        TetrisPlatformComponent,
+    ],
+    imports: [
+        BrowserModule,
+        CoreModule,
+        SharedModule,
+        StoreModule.forRoot({ tetris: tetrisReducer }),
+    ],
+    providers: [],
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

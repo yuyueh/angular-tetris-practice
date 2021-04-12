@@ -1,4 +1,4 @@
-import { DeepReadonlyArray } from "./types";
+import { DeepReadonlyArray } from './types';
 
 export type Shape = DeepReadonlyArray<number[]>;
 

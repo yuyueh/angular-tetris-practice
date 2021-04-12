@@ -1,5 +1,13 @@
-<ng-template ngFor let-tiles [ngForOf]="matrix$ | async" [ngForTrackBy]="trackByFn">
-    <app-tile [tile]="tile" *ngFor="let tile of tiles; trackBy: trackByFn"></app-tile>
+<ng-template
+    ngFor
+    let-tiles
+    [ngForOf]="matrix$ | async"
+    [ngForTrackBy]="trackByFn"
+>
+    <app-tile
+        [tile]="tile"
+        *ngFor="let tile of tiles; trackBy: trackByFn"
+    ></app-tile>
 </ng-template>
 
 <!-- {{ matrix$ | async | json }} -->
