@@ -19,7 +19,6 @@ export class MatrixComponent implements OnInit {
     constructor(private store: Store<AppState>) {}
 
     ngOnInit(): void {
-        this.store.dispatch(TetrisActions.start());
         this.store.dispatch(TetrisActions.setSound({ open: false }));
     }
 

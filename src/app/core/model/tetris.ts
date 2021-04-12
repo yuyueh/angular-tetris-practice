@@ -9,7 +9,6 @@ import { GAME_HEIGHT, GAME_WIDTH } from '../util/matrix.util';
 
 export class Tetris extends ImmutableObject {
     public readonly isLock: boolean = false;
-    public readonly isGameOver: boolean = false;
 
     constructor(
         public readonly matrix: DeepReadonlyArray<Tile[]>,
@@ -69,7 +68,10 @@ export class Tetris extends ImmutableObject {
             this.matrix
         );
 
-        return this.set('isGameOver', this._isGameOver())
+        return this.set(
+            'gameState',
+            this._isGameOver() ? GameState.Over : GameState.Started
+        )
             .set('matrix', this._dropLine(matrix))
             .set('current', this.next)
             .set('next', PieceUtil.getRandomPiece());

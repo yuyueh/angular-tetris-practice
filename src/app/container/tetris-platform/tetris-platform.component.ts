@@ -1,3 +1,4 @@
+import { GameState } from 'src/app/core/model/game-state.enum';
 import { AppState } from './../../store/app.state';
 import { select, Store } from '@ngrx/store';
 import {
@@ -8,7 +9,7 @@ import {
 } from '@angular/core';
 import { TetrisActions } from 'src/app/store/tetris/tetris.actions';
 import { TetrisSelectors } from 'src/app/store/tetris/tetris.selector';
-import { filter } from 'rxjs/operators';
+import { filter, first, pluck, tap } from 'rxjs/operators';
 import { KeyboardActions } from 'src/app/store/keyboard/keyboard.actions';
 
 const KeyUp = 'document:keyup';
@@ -21,15 +22,16 @@ const KeyDown = 'document:keydown';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TetrisPlatformComponent implements OnInit {
+    private _tetris$ = this.store.pipe(select(TetrisSelectors.selectTetris));
+
     constructor(private store: Store<AppState>) {}
 
     ngOnInit(): void {
-        this.store
-            .pipe(
-                select(TetrisSelectors.selectTetris),
-                filter((t) => t.isGameOver)
-            )
-            .subscribe(() => {
+        this.store.dispatch(TetrisActions.start());
+
+        this._tetris$
+            .pipe(filter((t) => t.gameState === GameState.Over))
+            .subscribe((t) => {
                 this.store.dispatch(TetrisActions.reset());
             });
     }
@@ -58,5 +60,19 @@ export class TetrisPlatformComponent implements OnInit {
     @HostListener(`${KeyDown}.space`)
     keyDownSpace() {
         this.store.dispatch(TetrisActions.fall());
+    }
+
+    @HostListener(`${KeyDown}.esc`)
+    keyDownEsc() {
+        this.store.dispatch(TetrisActions.start());
+    }
+
+    @HostListener(`${KeyDown}.enter`)
+    keyDownEnter() {
+        this._tetris$.pipe(first(), pluck('isLock')).subscribe((lock) => {
+            lock
+                ? this.store.dispatch(TetrisActions.resume())
+                : this.store.dispatch(TetrisActions.pause());
+        });
     }
 }

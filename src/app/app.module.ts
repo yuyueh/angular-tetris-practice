@@ -1,3 +1,4 @@
+import { EffectsModule } from '@ngrx/effects';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -23,6 +24,7 @@ import { StoreModule as NgxStoreModule } from '@ngrx/store';
         CoreModule,
         SharedModule,
         NgxStoreModule.forRoot({}),
+        EffectsModule.forRoot(),
         StoreModule,
     ],
     providers: [],

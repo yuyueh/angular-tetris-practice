@@ -7,41 +7,37 @@ import { GameState } from 'src/app/core/model/game-state.enum';
 
 export const FEATURE_KEY = 'tetris';
 
-export const initialState: Tetris = new Tetris(
-    MatrixUtil.getStartBoard(),
-    PieceUtil.getRandomPiece(),
-    PieceUtil.getRandomPiece(),
-    true,
-    GameState.Loading
-);
+function createState() {
+    return new Tetris(
+        MatrixUtil.getStartBoard(),
+        PieceUtil.getRandomPiece(),
+        PieceUtil.getRandomPiece(),
+        true,
+        GameState.Loading
+    );
+}
 
-const startReducer = on(TetrisActions.start, (state: Tetris) => {
-    // start timer
+const initialState: Tetris = createState();
 
-    return state
-        .set('current', PieceUtil.getRandomPiece())
-        .set('gameState', GameState.Started);
+const startReducer = on(TetrisActions.start, (_: Tetris) => {
+    return createState().set('gameState', GameState.Started);
 });
 
 const pauseReducer = on(TetrisActions.pause, (state: Tetris) => {
-    // stop timer
-
-    return state.set('gameState', GameState.Paused);
+    return state.set('gameState', GameState.Paused).set('isLock', true);
 });
 
 const resumeReducer = on(TetrisActions.resume, (state: Tetris) => {
-    // start timer
-
-    return state.set('gameState', GameState.Started);
+    return state.set('gameState', GameState.Started).set('isLock', false);
 });
 
 const resetReducer = on(TetrisActions.reset, (state: Tetris) => {
-    // clear timer
-
-    return state.set('gameState', GameState.Loading);
+    return state.set('gameState', GameState.Loading).set('isLock', true);
 });
 
 const moveLeftReducer = on(TetrisActions.moveLeft, (state: Tetris) => {
+    if (state.isLock) return state;
+
     const newState = state
         .clearCurrentPiece()
         .set('current', state.current.moveLeft());
@@ -52,6 +48,8 @@ const moveLeftReducer = on(TetrisActions.moveLeft, (state: Tetris) => {
 });
 
 const moveRightReducer = on(TetrisActions.moveRight, (state: Tetris) => {
+    if (state.isLock) return state;
+
     const newState = state
         .clearCurrentPiece()
         .set('current', state.current.moveRight());
@@ -62,6 +60,8 @@ const moveRightReducer = on(TetrisActions.moveRight, (state: Tetris) => {
 });
 
 const moveDownReducer = on(TetrisActions.moveDown, (state: Tetris) => {
+    if (state.isLock) return state;
+
     const newState = state
         .clearCurrentPiece()
         .set('current', state.current.moveDown());
@@ -72,6 +72,8 @@ const moveDownReducer = on(TetrisActions.moveDown, (state: Tetris) => {
 });
 
 const rotateReducer = on(TetrisActions.rotate, (state: Tetris) => {
+    if (state.isLock) return state;
+
     let newState = state
         .clearCurrentPiece()
         .set('current', state.current.rotate());
@@ -87,6 +89,8 @@ const rotateReducer = on(TetrisActions.rotate, (state: Tetris) => {
 });
 
 const fallReducer = on(TetrisActions.fall, (state: Tetris) => {
+    if (state.isLock) return state;
+
     let oldState = state;
     let newState = state
         .clearCurrentPiece()

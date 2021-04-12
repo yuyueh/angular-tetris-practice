@@ -1,4 +1,5 @@
 import { ImmutableObject } from './../util/common.util';
+
 export class Keyboard extends ImmutableObject {
     constructor(
         public readonly up: boolean,
