@@ -9,6 +9,7 @@ import {
 import { TetrisActions } from 'src/app/store/tetris/tetris.actions';
 import { TetrisSelectors } from 'src/app/store/tetris/tetris.selector';
 import { filter } from 'rxjs/operators';
+import { KeyboardActions } from 'src/app/store/keyboard/keyboard.actions';
 
 const KeyUp = 'document:keyup';
 const KeyDown = 'document:keydown';
@@ -35,6 +36,7 @@ export class TetrisPlatformComponent implements OnInit {
 
     @HostListener(`${KeyDown}.arrowUp`)
     keyDownUp() {
+        this.store.dispatch(KeyboardActions.set());
         this.store.dispatch(TetrisActions.rotate());
     }
 
