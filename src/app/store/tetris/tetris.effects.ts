@@ -2,7 +2,7 @@ import { GameState } from 'src/app/core/model/game-state.enum';
 import { TetrisSelectors } from 'src/app/store/tetris/tetris.selector';
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { ActionCreator, select, Store } from '@ngrx/store';
 import { interval, EMPTY, from, of, merge } from 'rxjs';
 import {
     switchMap,
@@ -11,11 +11,9 @@ import {
     tap,
     map,
     withLatestFrom,
-    finalize,
     delay,
     concatMap,
     mergeMap,
-    skip,
 } from 'rxjs/operators';
 import { AppState } from '../app.state';
 import { TetrisActions } from './tetris.actions';
@@ -31,7 +29,6 @@ const THOURGH_AROUND = [...FORWARD_SIDE, ...FORWARD_SIDE.reverse()];
 export class TetrisEffects {
     startGame$ = createEffect(() =>
         this._actions$.pipe(
-            // tap(console.log),
             ofType(TetrisActions.start),
             tap(() => this._soundService.start()),
             switchMap(() => interval(SPEED)),
@@ -46,43 +43,24 @@ export class TetrisEffects {
         )
     );
 
-    movePiece$ = createEffect(
-        () =>
-            merge(
-                this._actions$.pipe(ofType(TetrisActions.moveDown)),
-                this._actions$.pipe(ofType(TetrisActions.moveLeft)),
-                this._actions$.pipe(ofType(TetrisActions.moveRight)),
-                this._actions$.pipe(ofType(TetrisActions.pause)),
-                this._actions$.pipe(ofType(TetrisActions.resume))
-            ).pipe(tap(() => this._soundService.move())),
-        { dispatch: false }
+    movePiece$ = this._soundEffectFactory(
+        TetrisActions.moveDown,
+        TetrisActions.moveLeft,
+        TetrisActions.moveRight,
+        TetrisActions.pause,
+        TetrisActions.resume
+    )(() => this._soundService.move());
+
+    fallPiece$ = this._soundEffectFactory(TetrisActions.fall)(() =>
+        this._soundService.fall()
     );
 
-    fallPiece$ = createEffect(
-        () =>
-            this._actions$.pipe(
-                ofType(TetrisActions.fall),
-                tap(() => this._soundService.fall())
-            ),
-        { dispatch: false }
+    rotatePiece$ = this._soundEffectFactory(TetrisActions.rotate)(() =>
+        this._soundService.rotate()
     );
 
-    rotatePiece$ = createEffect(
-        () =>
-            this._actions$.pipe(
-                ofType(TetrisActions.rotate),
-                tap(() => this._soundService.rotate())
-            ),
-        { dispatch: false }
-    );
-
-    gameOver$ = createEffect(
-        () =>
-            this._actions$.pipe(
-                ofType(TetrisActions.reset),
-                tap(() => this._soundService.gameOver())
-            ),
-        { dispatch: false }
+    gameOver$ = this._soundEffectFactory(TetrisActions.reset)(() =>
+        this._soundService.gameOver()
     );
 
     restartGame$ = createEffect(() =>
@@ -113,4 +91,26 @@ export class TetrisEffects {
         private _store: Store<AppState>,
         private _soundService: SoundService
     ) {}
+
+    private _soundEffectFactory(...actions: ActionCreator[]) {
+        return (cb: () => void) => {
+            return createEffect(
+                () =>
+                    merge(
+                        ...actions.map((action) =>
+                            this._actions$.pipe(ofType(action))
+                        )
+                    ).pipe(
+                        withLatestFrom(
+                            this._store.pipe(
+                                select(TetrisSelectors.selectTetris)
+                            )
+                        ),
+                        filter(([_, tetris]) => tetris.sound),
+                        tap(cb)
+                    ),
+                { dispatch: false }
+            );
+        };
+    }
 }
