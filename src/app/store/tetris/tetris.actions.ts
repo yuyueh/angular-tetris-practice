@@ -1,7 +1,9 @@
+import { TileValue } from './../../core/model/tile';
 import { createAction, props } from '@ngrx/store';
 
 export namespace TetrisActions {
     export const start = createAction('[Tetris] Start');
+    export const restart = createAction('[Tetris] Restart');
     export const pause = createAction('[Tetris] Pause');
     export const resume = createAction('[Tetris] Resume');
     export const reset = createAction('[Tetris] Reset');
@@ -12,6 +14,10 @@ export namespace TetrisActions {
     export const setSound = createAction(
         '[Tetris] SetSound',
         props<{ open: boolean }>()
+    );
+    export const refreshRow = createAction(
+        '[Tetris] SetSound',
+        props<{ row: number; filled: TileValue }>()
     );
     export const fall = createAction('[Tetris] Fall');
 }

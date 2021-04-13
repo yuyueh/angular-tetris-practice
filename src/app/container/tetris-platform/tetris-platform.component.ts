@@ -64,7 +64,7 @@ export class TetrisPlatformComponent implements OnInit {
 
     @HostListener(`${KeyDown}.esc`)
     keyDownEsc() {
-        this.store.dispatch(TetrisActions.start());
+        this.store.dispatch(TetrisActions.restart());
     }
 
     @HostListener(`${KeyDown}.enter`)

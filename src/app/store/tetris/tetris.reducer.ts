@@ -4,6 +4,7 @@ import { Tetris } from 'src/app/core/model/tetris';
 import { TetrisActions } from './tetris.actions';
 import { MatrixUtil } from 'src/app/core/util/matrix.util';
 import { GameState } from 'src/app/core/model/game-state.enum';
+import { ArrayUtil } from 'src/app/core/util/common.util';
 
 export const FEATURE_KEY = 'tetris';
 
@@ -21,6 +22,10 @@ const initialState: Tetris = createState();
 
 const startReducer = on(TetrisActions.start, (_: Tetris) => {
     return createState().set('gameState', GameState.Started);
+});
+
+const restartGameReducer = on(TetrisActions.restart, (_: Tetris) => {
+    return createState().set('isLock', true);
 });
 
 const pauseReducer = on(TetrisActions.pause, (state: Tetris) => {
@@ -116,9 +121,26 @@ const setSoundReducer = on(
     }
 );
 
+const refreshRowReducer = on(
+    TetrisActions.refreshRow,
+    (state: Tetris, { row, filled }) => {
+        return row !== undefined && filled !== undefined
+            ? state.set(
+                  'matrix',
+                  ArrayUtil.set(
+                      state.matrix,
+                      row,
+                      MatrixUtil.getDefaultRow(filled)
+                  )
+              )
+            : state;
+    }
+);
+
 const _tetrisReducer = createReducer(
     initialState,
     startReducer,
+    restartGameReducer,
     pauseReducer,
     resumeReducer,
     resetReducer,
@@ -127,7 +149,8 @@ const _tetrisReducer = createReducer(
     moveDownReducer,
     rotateReducer,
     fallReducer,
-    setSoundReducer
+    setSoundReducer,
+    refreshRowReducer
 );
 
 export function tetrisReducer(state: Tetris | undefined, action: Action) {
