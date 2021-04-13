@@ -9,6 +9,9 @@ import { TileComponent } from './component/tile/tile.component';
 import { TetrisPlatformComponent } from './container/tetris-platform/tetris-platform.component';
 import { StoreModule } from './store/store.module';
 import { StoreModule as NgxStoreModule } from '@ngrx/store';
+import { KeyboardComponent } from './component/keyboard/keyboard.component';
+import { VentsComponent } from './component/vents/vents.component';
+import { LogoComponent } from './component/logo/logo.component';
 
 @NgModule({
     declarations: [
@@ -16,6 +19,9 @@ import { StoreModule as NgxStoreModule } from '@ngrx/store';
         MatrixComponent,
         TileComponent,
         TetrisPlatformComponent,
+        KeyboardComponent,
+        VentsComponent,
+        LogoComponent,
     ],
     imports: [
         BrowserModule,

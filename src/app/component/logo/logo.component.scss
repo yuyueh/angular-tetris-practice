@@ -1,0 +1,14 @@
+@import '../../../variables';
+
+.logo {
+    color: $font-color;
+    font-size: 3.5vw;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        display: inline-block;
+    }
+}
