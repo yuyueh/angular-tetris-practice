@@ -13,79 +13,79 @@ const keyDownUpReducer = on(KeyboardActions.keyDownUp, (state: Keyboard) => {
 const keyDownDownReducer = on(
     KeyboardActions.keyDownDown,
     (state: Keyboard) => {
-        return state.set('up', true);
+        return state.set('down', true);
     }
 );
 
 const keyDownLeftReducer = on(
     KeyboardActions.keyDownLeft,
     (state: Keyboard) => {
-        return state.set('up', true);
+        return state.set('left', true);
     }
 );
 
 const keyDownRightReducer = on(
     KeyboardActions.keyDownRight,
     (state: Keyboard) => {
-        return state.set('up', true);
+        return state.set('right', true);
     }
 );
 
 const keyDownAReducer = on(KeyboardActions.keyDownA, (state: Keyboard) => {
-    return state.set('up', true);
+    return state.set('a', true);
 });
 
 const keyDownBReducer = on(KeyboardActions.keyDownB, (state: Keyboard) => {
-    return state.set('up', true);
+    return state.set('b', true);
 });
 
 const keyDownSelectReducer = on(
     KeyboardActions.keyDownSelect,
     (state: Keyboard) => {
-        return state.set('up', true);
+        return state.set('select', true);
     }
 );
 
 const keyDownStartReducer = on(
     KeyboardActions.keyDownStart,
     (state: Keyboard) => {
-        return state.set('up', true);
+        return state.set('start', true);
     }
 );
 
 const keyUpUpReducer = on(KeyboardActions.keyUpUp, (state: Keyboard) => {
-    return state.set('up', true);
+    return state.set('up', false);
 });
 
 const keyUpDownReducer = on(KeyboardActions.keyUpDown, (state: Keyboard) => {
-    return state.set('up', true);
+    return state.set('down', false);
 });
 
 const keyUpLeftReducer = on(KeyboardActions.keyUpLeft, (state: Keyboard) => {
-    return state.set('up', true);
+    return state.set('left', false);
 });
 
 const keyUpRightReducer = on(KeyboardActions.keyUpRight, (state: Keyboard) => {
-    return state.set('up', true);
+    return state.set('right', false);
 });
 
 const keyUpAReducer = on(KeyboardActions.keyUpA, (state: Keyboard) => {
-    return state.set('up', true);
+    return state.set('a', false);
 });
 
 const keyUpBReducer = on(KeyboardActions.keyUpB, (state: Keyboard) => {
-    return state.set('up', true);
+    return state.set('b', false);
 });
 
 const keyUpSelectReducer = on(
     KeyboardActions.keyUpSelect,
     (state: Keyboard) => {
-        return state.set('up', true);
+        return state.set('select', false);
     }
 );
 
 const keyUpStartReducer = on(KeyboardActions.keyUpStart, (state: Keyboard) => {
-    return state.set('up', true);
+    return state.set('start', false);
 });
 
 const _keyboardReducer = createReducer(

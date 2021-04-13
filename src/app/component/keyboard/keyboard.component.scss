@@ -13,6 +13,15 @@
     display: inline-block;
     position: relative;
 
+    &.click {
+        .arrow-up,
+        .arrow-down,
+        .arrow-left,
+        .arrow-right {
+            box-shadow: none;
+        }
+    }
+
     .arrow-up {
         width: $arrow-width;
         height: $arrow-width;
@@ -138,4 +147,14 @@
         top: 38vw;
         left: 38vw;
     }
+
+    &.pressing {
+        transform: rotate(345deg) translateX(2px) translateY(2px);
+        box-shadow: none;
+    }
+}
+
+.pressing {
+    transform: translateX(2px) translateY(2px);
+    box-shadow: none;
 }
