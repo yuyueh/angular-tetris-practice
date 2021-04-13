@@ -16,7 +16,7 @@ export namespace TetrisActions {
         props<{ open: boolean }>()
     );
     export const refreshRow = createAction(
-        '[Tetris] SetSound',
+        '[Tetris] RefreshRow',
         props<{ row: number; filled: TileValue }>()
     );
     export const fall = createAction('[Tetris] Fall');
