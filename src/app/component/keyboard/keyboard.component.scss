@@ -18,6 +18,7 @@
         display: inline-block;
         position: absolute;
         left: $arrow-width;
+        box-shadow: 1vw 1vw 1vw 0.025vw #2424246e;
     }
 
     .arrow-down {
@@ -30,6 +31,7 @@
         position: absolute;
         left: $arrow-width;
         top: $arrow-width * 2;
+        box-shadow: inset -4px -4px 6px 0px #222, 1vw 1vw 1vw 0.025vw #2424246e;
     }
 
     .arrow-left {
@@ -42,6 +44,7 @@
         position: absolute;
         left: 0;
         top: $arrow-width;
+        box-shadow: 1vw 1vw 1vw 0.025vw #2424246e;
     }
 
     .arrow-right {
@@ -54,6 +57,7 @@
         position: absolute;
         left: $arrow-width * 2;
         top: $arrow-width;
+        box-shadow: inset -4px -4px 6px 0px #222, 1vw 1vw 1vw 0.025vw #2424246e;
     }
 
     .arrow-center {
@@ -64,6 +68,7 @@
         position: absolute;
         left: $arrow-width;
         top: $arrow-width;
+        box-shadow: 1vw 1vw 1vw 0.025vw #2424246e;
     }
 }
 
@@ -118,6 +123,7 @@
     color: $font-color;
     font-weight: 600;
     border-radius: 2vw;
+    box-shadow: 1vw 1vw 1vw 0.025vw #2424246e;
 
     &.select {
         top: 38vw;
