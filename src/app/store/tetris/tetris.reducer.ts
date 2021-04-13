@@ -76,6 +76,18 @@ const moveDownReducer = on(TetrisActions.moveDown, (state: Tetris) => {
         : newState.drawCurrentPiece();
 });
 
+const autoReducer = on(TetrisActions.auto, (state: Tetris) => {
+    if (state.isLock) return state;
+
+    const newState = state
+        .clearCurrentPiece()
+        .set('current', state.current.moveDown());
+
+    return newState.isCollidedWithBottom() || newState.isCollidedWithSolid()
+        ? state.nextPiece()
+        : newState.drawCurrentPiece();
+});
+
 const rotateReducer = on(TetrisActions.rotate, (state: Tetris) => {
     if (state.isLock) return state;
 
@@ -147,6 +159,7 @@ const _tetrisReducer = createReducer(
     moveLeftReducer,
     moveRightReducer,
     moveDownReducer,
+    autoReducer,
     rotateReducer,
     fallReducer,
     setSoundReducer,

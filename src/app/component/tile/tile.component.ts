@@ -18,13 +18,13 @@ import { DeepReadonlyObject } from 'src/app/core/model/types';
 export class TileComponent implements OnChanges {
     @Input() tile!: Readonly<Tile>;
 
-    constructor(private elm: ElementRef, private render: Renderer2) {}
+    constructor(private _elm: ElementRef, private _render: Renderer2) {}
 
     ngOnChanges(): void {
         if (this.tile.isFilled) {
-            this.render.addClass(this.elm.nativeElement, 'filled');
+            this._render.addClass(this._elm.nativeElement, 'filled');
         } else {
-            this.render.removeClass(this.elm.nativeElement, 'filled');
+            this._render.removeClass(this._elm.nativeElement, 'filled');
         }
     }
 }

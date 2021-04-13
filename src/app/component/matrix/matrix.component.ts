@@ -13,14 +13,12 @@ import { KeyboardSelectors } from 'src/app/store/keyboard/keyboard.selector';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MatrixComponent implements OnInit {
-    matrix$ = this.store.pipe(select(TetrisSelectors.selectMatrix));
-    keyboard$ = this.store.pipe(select(KeyboardSelectors.selectKeyboard));
+    matrix$ = this._store.pipe(select(TetrisSelectors.selectMatrix));
+    keyboard$ = this._store.pipe(select(KeyboardSelectors.selectKeyboard));
 
-    constructor(private store: Store<AppState>) {}
+    constructor(private _store: Store<AppState>) {}
 
-    ngOnInit(): void {
-        this.store.dispatch(TetrisActions.setSound({ open: false }));
-    }
+    ngOnInit(): void {}
 
     trackByFn(index: number, _: any) {
         return index;

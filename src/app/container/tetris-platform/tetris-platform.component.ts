@@ -22,57 +22,57 @@ const KeyDown = 'document:keydown';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TetrisPlatformComponent implements OnInit {
-    private _tetris$ = this.store.pipe(select(TetrisSelectors.selectTetris));
+    private _tetris$ = this._store.pipe(select(TetrisSelectors.selectTetris));
 
-    constructor(private store: Store<AppState>) {}
+    constructor(private _store: Store<AppState>) {}
 
     ngOnInit(): void {
-        this.store.dispatch(TetrisActions.start());
+        this._store.dispatch(TetrisActions.start());
 
         this._tetris$
             .pipe(filter((t) => t.gameState === GameState.Over))
             .subscribe((t) => {
-                this.store.dispatch(TetrisActions.reset());
+                this._store.dispatch(TetrisActions.reset());
             });
     }
 
     @HostListener(`${KeyDown}.arrowUp`)
     keyDownUp() {
-        this.store.dispatch(KeyboardActions.set());
-        this.store.dispatch(TetrisActions.rotate());
+        this._store.dispatch(KeyboardActions.set());
+        this._store.dispatch(TetrisActions.rotate());
     }
 
     @HostListener(`${KeyDown}.arrowDown`)
     keyDownDown() {
-        this.store.dispatch(TetrisActions.moveDown());
+        this._store.dispatch(TetrisActions.moveDown());
     }
 
     @HostListener(`${KeyDown}.arrowLeft`)
     keyDownLeft() {
-        this.store.dispatch(TetrisActions.moveLeft());
+        this._store.dispatch(TetrisActions.moveLeft());
     }
 
     @HostListener(`${KeyDown}.arrowRight`)
     keyDownRight() {
-        this.store.dispatch(TetrisActions.moveRight());
+        this._store.dispatch(TetrisActions.moveRight());
     }
 
     @HostListener(`${KeyDown}.space`)
     keyDownSpace() {
-        this.store.dispatch(TetrisActions.fall());
+        this._store.dispatch(TetrisActions.fall());
     }
 
     @HostListener(`${KeyDown}.esc`)
     keyDownEsc() {
-        this.store.dispatch(TetrisActions.restart());
+        this._store.dispatch(TetrisActions.restart());
     }
 
     @HostListener(`${KeyDown}.enter`)
     keyDownEnter() {
         this._tetris$.pipe(first(), pluck('isLock')).subscribe((lock) => {
             lock
-                ? this.store.dispatch(TetrisActions.resume())
-                : this.store.dispatch(TetrisActions.pause());
+                ? this._store.dispatch(TetrisActions.resume())
+                : this._store.dispatch(TetrisActions.pause());
         });
     }
 }
