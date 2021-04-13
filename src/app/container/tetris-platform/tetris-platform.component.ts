@@ -62,13 +62,13 @@ export class TetrisPlatformComponent implements OnInit {
         this._store.dispatch(TetrisActions.fall());
     }
 
-    @HostListener(`${KeyDown}.esc`)
-    keyDownEsc() {
+    @HostListener(`${KeyDown}.r`)
+    keyDownRestart() {
         this._store.dispatch(TetrisActions.restart());
     }
 
-    @HostListener(`${KeyDown}.enter`)
-    keyDownEnter() {
+    @HostListener(`${KeyDown}.p`)
+    keyDownPause() {
         this._tetris$.pipe(first(), pluck('isLock')).subscribe((lock) => {
             lock
                 ? this._store.dispatch(TetrisActions.resume())
