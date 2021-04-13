@@ -1,15 +1,19 @@
 <div class="keyboard">
     <div class="arrow-keys">
-        <div class="arrow-up" (click)="onClick('up')"></div>
-        <div class="arrow-down" (click)="onClick('down')"></div>
-        <div class="arrow-left" (click)="onClick('left')"></div>
-        <div class="arrow-right" (click)="onClick('right')"></div>
+        <div class="arrow-up button" (click)="onClick('up')"></div>
+        <div class="arrow-down button" (click)="onClick('down')"></div>
+        <div class="arrow-left button" (click)="onClick('left')"></div>
+        <div class="arrow-right button" (click)="onClick('right')"></div>
         <div class="arrow-center"></div>
     </div>
     <div class="function-keys">
-        <div class="function-button b" (click)="onClick('b')">B</div>
-        <div class="function-button a" (click)="onClick('a')">A</div>
+        <div class="function-button b button" (click)="onClick('b')">B</div>
+        <div class="function-button a button" (click)="onClick('a')">A</div>
     </div>
-    <div class="center-button select" (click)="onClick('select')">SELECT</div>
-    <div class="center-button start" (click)="onClick('start')">START</div>
+    <div class="center-button select button" (click)="onClick('select')">
+        SELECT
+    </div>
+    <div class="center-button start button" (click)="onClick('start')">
+        START
+    </div>
 </div>

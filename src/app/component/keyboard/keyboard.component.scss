@@ -5,6 +5,10 @@
     position: relative;
 }
 
+.button {
+    cursor: pointer;
+}
+
 .arrow-keys {
     display: inline-block;
     position: relative;
@@ -114,7 +118,7 @@
 .center-button {
     width: 13vw;
     height: 2vw;
-    background: #8e8785;
+    background: #6e6a69;
     position: absolute;
     text-align: center;
     transform: rotate(345deg);

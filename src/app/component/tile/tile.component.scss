@@ -1,5 +1,5 @@
 :host {
-    border: 2px solid #879372;
+    border: 0.3vw solid #879372;
     padding: 8%;
 
     &:after {
@@ -11,7 +11,7 @@
     }
 
     &.filled {
-        border: 2px solid #111;
+        border: 0.3vw solid #111;
 
         &:after {
             background-color: #111;
