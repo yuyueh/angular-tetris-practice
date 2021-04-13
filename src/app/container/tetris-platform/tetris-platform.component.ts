@@ -1,3 +1,4 @@
+import { KeyboardButtons } from './../../core/model/keyboard';
 import { GameState } from 'src/app/core/model/game-state.enum';
 import { AppState } from './../../store/app.state';
 import { select, Store } from '@ngrx/store';
@@ -38,7 +39,7 @@ export class TetrisPlatformComponent implements OnInit {
 
     @HostListener(`${KeyDown}.arrowUp`)
     keyDownUp() {
-        this._store.dispatch(KeyboardActions.set());
+        this._store.dispatch(KeyboardActions.keyDownUp());
         this._store.dispatch(TetrisActions.rotate());
     }
 
@@ -74,5 +75,9 @@ export class TetrisPlatformComponent implements OnInit {
                 ? this._store.dispatch(TetrisActions.resume())
                 : this._store.dispatch(TetrisActions.pause());
         });
+    }
+
+    onMouseDown(b: KeyboardButtons) {
+        console.log(b);
     }
 }
