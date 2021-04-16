@@ -32,10 +32,6 @@ export class TetrisEffects {
             ofType(TetrisActions.start),
             tap(() => this._soundService.start()),
             switchMap(() => interval(SPEED)),
-            withLatestFrom(
-                this._store.pipe(select(TetrisSelectors.selectTetris))
-            ),
-            filter(([_, tetris]) => tetris.gameState === GameState.Started),
             map(() => ({
                 type: TetrisActions.auto.type,
             })),
