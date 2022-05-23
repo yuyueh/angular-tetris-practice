@@ -3,6 +3,8 @@
     background-color: #d1cac3;
     border-radius: 12px;
     border-end-end-radius: 36px;
+    transform: scale(0.3);
+    transform-origin: top center;
 }
 
 .sunken {
@@ -13,21 +15,12 @@
 
 .panel {
     background-color: #9ead86;
-    display: flex;
     padding: 2%;
     border: 7vw solid #757071;
     border-left: 12vw solid #757071;
     border-right: 12vw solid #757071;
     border-radius: 12px;
     border-end-end-radius: 36px;
-}
-
-.matrix-container {
-    padding: 1vw;
-    border: 0.5vw solid #222;
-    display: block;
-    flex-grow: 1;
-    width: 20vw;
 }
 
 .state-container {
