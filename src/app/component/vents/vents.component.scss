@@ -1,0 +1,21 @@
+.vents {
+    margin-left: 50vw;
+    margin-top: -16vw;
+    margin-bottom: 2vw;
+    width: 36vw;
+    height: 20vw;
+    transform: rotate(345deg);
+
+    .vent {
+        width: 1vw;
+        height: 16vw;
+        display: inline-block;
+        background: #807a75;
+        border-top: 2vw solid #bdb6af;
+        border-bottom: 2vw solid #bdb6af;
+        border-left: 1vw solid #bdb6af;
+        border-right: 1vw solid #bdb6af;
+        border-radius: 2vw;
+        margin-right: 3vw;
+    }
+}

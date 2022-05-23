@@ -1,0 +1,39 @@
+<div class="keyboard">
+    <div class="arrow-keys" [ngClass]="{ pressing: arrowClicked$ | async }">
+        <div class="arrow-up button" (click)="onClick('up')"></div>
+        <div class="arrow-down button" (click)="onClick('down')"></div>
+        <div class="arrow-left button" (click)="onClick('left')"></div>
+        <div class="arrow-right button" (click)="onClick('right')"></div>
+        <div class="arrow-center"></div>
+    </div>
+    <div class="function-keys">
+        <div
+            class="function-button b button"
+            [ngClass]="{ pressing: buttonBClicked$ | async }"
+            (click)="onClick('b')"
+        >
+            B
+        </div>
+        <div
+            class="function-button a button"
+            [ngClass]="{ pressing: buttonAClicked$ | async }"
+            (click)="onClick('a')"
+        >
+            A
+        </div>
+    </div>
+    <div
+        class="center-button select button"
+        [ngClass]="{ pressing: selectClicked$ | async }"
+        (click)="onClick('select')"
+    >
+        SELECT
+    </div>
+    <div
+        class="center-button start button"
+        [ngClass]="{ pressing: startClicked$ | async }"
+        (click)="onClick('start')"
+    >
+        START
+    </div>
+</div>
