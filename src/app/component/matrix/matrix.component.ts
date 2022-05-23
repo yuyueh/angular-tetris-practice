@@ -12,7 +12,6 @@ import { KeyboardSelectors } from 'src/app/store/keyboard/keyboard.selector';
 })
 export class MatrixComponent implements OnInit {
     matrix$ = this._store.pipe(select(TetrisSelectors.selectMatrix));
-    keyboard$ = this._store.pipe(select(KeyboardSelectors.selectKeyboard));
 
     constructor(private _store: Store<AppState>) {}
 

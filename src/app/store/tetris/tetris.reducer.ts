@@ -127,8 +127,6 @@ const fallReducer = on(TetrisActions.fall, (state: Tetris) => {
 const setSoundReducer = on(
     TetrisActions.setSound,
     (state: Tetris, { open }) => {
-        // call soundService
-
         return state.set('sound', open);
     }
 );

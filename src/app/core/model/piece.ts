@@ -17,6 +17,27 @@ export class Piece extends ImmutableObject {
         return this.shapes[this.rotation];
     }
 
+    get positionOnGrid(): Positions[] {
+        return this.shape
+            .map<(Positions | undefined)[]>((row, positionY) =>
+                row.map((filled, positionX) =>
+                    filled
+                        ? [this.y + positionY, this.x + positionX]
+                        : undefined
+                )
+            )
+            .reduce((o, p) => [...o, ...p], [])
+            .filter(notEmpty);
+    }
+
+    get positionOnGridWithoutOutside(): Positions[] {
+        return this.positionOnGrid.filter(removeNegativePosition);
+    }
+
+    get extraLengthOnTheRight(): number {
+        return Math.max(...this.positionOnGrid.map(([_, x]) => x)) - 10 + 1;
+    }
+
     constructor(
         public readonly x: number,
         public readonly y: number,
@@ -42,27 +63,6 @@ export class Piece extends ImmutableObject {
         return this._isLast()
             ? this.set('rotation', PieceRotation.Deg0)
             : this.set('rotation', this.rotation + 1);
-    }
-
-    get positionOnGrid(): Positions[] {
-        return this.shape
-            .map<(Positions | undefined)[]>((row, positionY) =>
-                row.map((filled, positionX) =>
-                    filled
-                        ? [this.y + positionY, this.x + positionX]
-                        : undefined
-                )
-            )
-            .reduce((o, p) => [...o, ...p], [])
-            .filter(notEmpty);
-    }
-
-    get positionOnGridWithoutOutside(): Positions[] {
-        return this.positionOnGrid.filter(removeNegativePosition);
-    }
-
-    get extraLengthOnTheRight(): number {
-        return Math.max(...this.positionOnGrid.map(([_, x]) => x)) - 10 + 1;
     }
 
     private _isLast() {

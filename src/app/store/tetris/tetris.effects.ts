@@ -23,7 +23,7 @@ import { SoundService } from 'src/app/core/service/sound.service';
 const SPEED = 1000;
 const ANIMATION_TIME = 25;
 const FORWARD_SIDE = new Array(GAME_HEIGHT).fill(undefined).map((_, i) => i);
-const THOURGH_AROUND = [...FORWARD_SIDE, ...FORWARD_SIDE.reverse()];
+const THOROUGH_AROUND = [...FORWARD_SIDE, ...FORWARD_SIDE.reverse()];
 
 @Injectable()
 export class TetrisEffects {
@@ -63,7 +63,7 @@ export class TetrisEffects {
         this._actions$.pipe(
             ofType(TetrisActions.restart),
             tap(() => this._soundService.clear()),
-            switchMap(() => from(THOURGH_AROUND)),
+            switchMap(() => from(THOROUGH_AROUND)),
             concatMap((item) => of(item).pipe(delay(ANIMATION_TIME))),
             mergeMap((row, i) => {
                 const index = i % (GAME_HEIGHT * 2);
